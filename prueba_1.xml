@@ -1,0 +1,37 @@
+<mujoco>
+<option timestep="0.005" gravity="0 0 -9.81" integrator="RK4">
+    <flag energy="enable" contact="enable" sensornoise="enable"/>
+</option>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".5 .5 .3"
+     rgb2=".2 .3 .4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+  </asset>
+
+  <worldbody>
+  <light diffuse="0.5 0.5 0.5" pos="0 0 10" dir="0 0 -1"/>
+  <camera pos="-0.225 -3.653 6.399" xyaxes="0.999 0.044 0.000 -0.036 0.816 0.577"/>
+  <geom type="plane" size="3 3 0.1" material="grid"/>
+     <body name="box_body" pos="0 0 0.1" euler="0 90 0">
+      <joint name="q_0" type="hinge" pos ="0 0 -0.5" axis= "-1 0 0" damping="0.4" frictionloss="0.1"/>
+      <geom name="box_geo" type="cylinder" size="0.05 0.5" rgba="1 1 0 1" mass="1"/>
+        <body name="box_arm" pos="0 0 1" euler="0 0 0">
+        <joint name="q_1" type="hinge" pos ="0 0 -0.5" axis= "-1 0 0" damping="0.1" frictionloss="0.05"/>
+        <geom name="box_arm" type="cylinder" size="0.05 0.5" rgba="1 1 0 1" mass="1"/>
+      </body>
+      </body>
+  </worldbody>
+  <actuator>
+    <position name="position_servo_0" joint="q_0" kp="0"/>
+    <velocity name="velocity_servo_0" joint="q_0" kv="12"/>
+
+    <position name="position_servo_1" joint="q_1" kp="0"/>
+    <velocity name="velocity_servo_1" joint="q_1" kv="5"/>
+    </actuator>
+  <sensor>
+  <jointpos name="q_0" joint="q_0" noise="0.003"/>
+  <jointpos name="q_1" joint="q_1" noise="0.003"/>
+  <jointvel name="q_0p" joint="q_0" noise="0.003"/>
+  <jointvel name="q_1p" joint="q_1" noise="0.003"/>
+  </sensor>
+</mujoco>
